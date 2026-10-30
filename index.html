@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crie sites completos com inteligência artificial, gratuitamente, sem limites, sem marca d'água e com domínio personalizado.">
+  <meta name="theme-color" content="#090b16">
+  <title>Criaí — IA Criadora de Sites</title>
+  <style>
+    :root {
+      --bg: #090b16;
+      --bg-soft: #101329;
+      --surface: rgba(22, 26, 51, 0.76);
+      --surface-solid: #151933;
+      --text: #f6f7ff;
+      --muted: #aeb4d1;
+      --primary: #8b5cf6;
+      --primary-light: #b79aff;
+      --secondary: #2dd4bf;
+      --border: rgba(255, 255, 255, 0.11);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --radius: 22px;
+      --container: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(139, 92, 246, 0.17), transparent 30rem),
+        radial-gradient(circle at 88% 30%, rgba(45, 212, 191, 0.1), transparent 28rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    svg {
+      display: block;
+    }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--container));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(9, 11, 22, 0.84);
+      backdrop-filter: blur(18px);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), #6d5dfc 55%, var(--secondary));
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.35);
+    }
+
+    .brand-mark svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .brand span:last-child {
+      background: linear-gradient(90deg, #fff 15%, #c8b8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .nav a {
+      padding: 0.58rem 0.68rem;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 650;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.07);
+      outline: none;
+    }
+
+    .nav a[aria-current="page"] {
+      color: #fff;
+      background: rgba(139, 92, 246, 0.17);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 0 3.5rem;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      top: -280px;
+      left: 50%;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.14);
+      filter: blur(50px);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 1.1rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid rgba(183, 154, 255, 0.26);
+      border-radius: 999px;
+      color: #d8cbff;
+      background: rgba(139, 92, 246, 0.1);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--secondary);
+      box-shadow: 0 0 0 5px rgba(45, 212, 191, 0.11);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin-bottom: 1.35rem;
+      font-size: clamp(2.65rem, 11vw, 5.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(95deg, #c6adff, #8b5cf6 45%, #50e7d0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy > p {
+      max-width: 650px;
+      margin-bottom: 1.8rem;
+      color: var(--muted);
+      font-size: clamp(1.03rem, 3vw, 1.2rem);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .button {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.8rem 1.15rem;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      font-weight: 750;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button:focus-visible {
+      outline: 3px solid rgba(45, 212, 191, 0.55);
+      outline-offset: 3px;
+    }
+
+    .button-primary {
+      color: #fff;
+      background: linear-gradient(135deg, #9667ff, #7547ec);
+      box-shadow: 0 12px 30px rgba(117, 71, 236, 0.32);
+    }
+
+    .button-primary:hover {
+      box-shadow: 0 16px 38px rgba(117, 71, 236, 0.42);
+    }
+
+    .button-secondary {
+      border-color: var(--border);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.2rem;
+      margin-top: 1.4rem;
+      color: #c3c8df;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+    }
+
+    .trust-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--secondary);
+    }
+
+    .builder {
+      position: relative;
+      padding: 0.65rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025));
+      box-shadow: var(--shadow);
+    }
+
+    .builder-window {
+      overflow: hidden;
+      min-height: 430px;
+      border-radius: 17px;
+      background: #11152a;
+    }
+
+    .window-bar {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0 0.9rem;
+      border-bottom: 1px solid var(--border);
+      background: #171b35;
+    }
+
+    .window-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff7089;
+    }
+
+    .window-dot:nth-child(2) {
+      background: #ffd166;
+    }
+
+    .window-dot:nth-child(3) {
+      background: #55d6a6;
+    }
+
+    .window-url {
+      overflow: hidden;
+      margin-left: 0.45rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 7px;
+      color: #9299ba;
+      background: rgba(0, 0, 0, 0.16);
+      font-size: 0.66rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .builder-body {
+      display: grid;
+      min-height: 384px;
+      grid-template-columns: 62px 1fr;
+    }
+
+    .tool-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1rem 0.55rem;
+      border-right: 1px solid var(--border);
+      background: #13162c;
+    }
+
+    .tool {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      color: #858dac;
+      background: transparent;
+    }
+
+    .tool.active {
+      border-color: rgba(139, 92, 246, 0.32);
+      color: #cbb8ff;
+      background: rgba(139, 92, 246, 0.16);
+    }
+
+    .tool svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .canvas {
+      position: relative;
+      padding: 1rem;
+      background:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+        #0e1122;
+      background-size: 20px 20px;
+    }
+
+    .site-preview {
+      overflow: hidden;
+      height: 100%;
+      min-height: 350px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      background: #f7f6f2;
+      color: #171522;
+    }
+
+    .preview-nav {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.9rem;
+      border-bottom: 1px solid #dedce3;
+      font-size: 0.48rem;
+      font-weight: 700;
+    }
+
+    .preview-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.63rem;
+    }
+
+    .preview-logo i {
+      width: 14px;
+      height: 14px;
+      display: block;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #7c4dff, #2dd4bf);
+    }
+
+    .preview-links {
+      display: flex;
+      gap: 0.7rem;
+      color: #65616d;
+    }
+
+    .preview-hero {
+      display: grid;
+      gap: 0.9rem;
+      padding: 1.4rem 1.1rem 1rem;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+    }
+
+    .preview-kicker {
+      margin-bottom: 0.38rem;
+      color: #7550d8;
+      font-size: 0.43rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .preview-title {
+      margin-bottom: 0.6rem;
+      font-family: Georgia, serif;
+      font-size: clamp(1rem, 4vw, 1.55rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    .preview-text {
+      max-width: 220px;
+      margin-bottom: 0.75rem;
+      color: #6f6b76;
+      font-size: 0.47rem;
+      line-height: 1.55;
+    }
+
+    .preview-button {
+      display: inline-block;
+      padding: 0.34rem 0.6rem;
+      border-radius: 5px;
+      color: #fff;
+      background: #7954d9;
+      font-size: 0.44rem;
+      font-weight: 700;
+    }
+
+    .preview-art {
+      position: relative;
+      min-height: 160px;
+      overflow: hidden;
+      border-radius: 50% 50% 12px 12px;
+      background:
+        radial-gradient(circle at 67% 29%, #ffeecf 0 10%, transparent 11%),
+        linear-gradient(145deg, transparent 47%, rgba(255,255,255,0.45) 48% 53%, transparent 54%),
+        linear-gradient(135deg, #7550d8, #45cbbd);
+    }
+
+    .preview-art::before,
+    .preview-art::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .preview-art::before {
+      width: 70px;
+      height: 70px;
+      right: -15px;
+      bottom: -10px;
+    }
+
+    .preview-art::after {
+      width: 35px;
+      height: 35px;
+      left: 18px;
+      top: 17px;
+    }
+
+    .preview-cards {
+      display: grid;
+      gap: 0.55rem;
+      padding: 0 1.1rem 1rem;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .preview-card {
+      min-height: 53px;
+      padding: 0.55rem;
+      border: 1px solid #e3e0e7;
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .preview-card i {
+      width: 16px;
+      height: 16px;
+      display: block;
+      margin-bottom: 0.35rem;
+      border-radius: 5px;
+      background: #ded2ff;
+    }
+
+    .preview-card span {
+      display: block;
+      width: 76%;
+      height: 4px;
+      border-radius: 4px;
+      background: #c7c3ce;
+    }
+
+    .preview-card span:last-child {
+      width: 54%;
+      margin-top: 4px;
+      background: #e3e0e7;
+    }
+
+    .ai-bubble {
+      position: absolute;
+      right: -0.5rem;
+      bottom: 1.5rem;
+      width: min(245px, 72%);
+      padding: 0.8rem;
+      border: 1px solid rgba(183, 154, 255, 0.29);
+      border-radius: 14px;
+      color: #e9e3ff;
+      background: rgba(29, 28, 57, 0.96);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+      font-size: 0.68rem;
+      line-height: 1.45;
+    }
+
+    .ai-label {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.35rem;
+      color: var(--primary-light);
+      font-size: 0.63rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .ai-label svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      color: #86eadb;
+      font-size: 0.61rem;
+      font-weight: 700;
+    }
+
+    .status-line i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(45,212,191,0.12);
+    }
+
+    .stats {
+      padding: 1rem 0 4.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .stat {
+      padding: 1.35rem;
+      text-align: center;
+    }
+
+    .stat + .stat {
+      border-top: 1px solid var(--border);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #fff;
+      font-size: 1.45rem;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .section {
+      padding: 4.5rem 0;
+    }
+
+    .section-soft {
+      border-block: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+    }
+
+    .section-heading {
+      max-width: 710px;
+      margin: 0 auto 2.5rem;
+      text-align: center;
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 0.55rem;
+      color: var(--secondary);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 0.8rem;
+      font-size: clamp(2rem, 7vw, 3.25rem);
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+    }
+
+    .section-heading p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .features {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .feature-card {
+      padding: 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.13);
+    }
+
+    .feature-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1.1rem;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 13px;
+      color: #cbb8ff;
+      background: rgba(139, 92, 246, 0.13);
+    }
+
+    .feature-card:nth-child(2) .feature-icon,
+    .feature-card:nth-child(5) .feature-icon {
+      border-color: rgba(45, 212, 191, 0.28);
+      color: #77ecdc;
+      background: rgba(45, 212, 191, 0.1);
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 0.45rem;
+      font-size: 1.08rem;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.91rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .step {
+      position: relative;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.028);
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), #6242c8);
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(139, 92, 246, 0.28);
+    }
+
+    .step h3 {
+      margin-bottom: 0.4rem;
+      font-size: 1.14rem;
+    }
+
+    .step p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.91rem;
+    }
+
+    .example-strip {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 2rem;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .example {
+      min-height: 120px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: linear-gradient(145deg, #432f78, #171a38);
+    }
+
+    .example:nth-child(2) {
+      background: linear-gradient(145deg, #125e57, #101d2b);
+    }
+
+    .example:nth-child(3) {
+      background: linear-gradient(145deg, #693b25, #241827);
+    }
+
+    .example:nth-child(4) {
+      background: linear-gradient(145deg, #2f4879, #17162f);
+    }
+
+    .example span {
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .cta {
+      padding: 4.5rem 0;
+    }
+
+    .cta-box {
+      position: relative;
+      overflow: hidden;
+      padding: 2.4rem 1.3rem;
+      border: 1px solid rgba(183, 154, 255, 0.25);
+      border-radius: 28px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(45, 212, 191, 0.16), transparent 15rem),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.26), transparent 20rem),
+        #15152d;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      top: -120px;
+      right: 12%;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+    }
+
+    .cta-box h2 {
+      position: relative;
+      max-width: 700px;
+      margin-inline: auto;
+    }
+
+    .cta-box p {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+      color: #c1c5dd;
+    }
+
+    .cta-box .button {
+      position: relative;
+    }
+
+    .site-footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      text-align: center;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.45rem 1.2rem;
+    }
+
+    .footer-nav a {
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .footer-nav a:hover,
+    .footer-nav a:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
+    .copyright {
+      font-size: 0.82rem;
+    }
+
+    @media (min-width: 560px) {
+      .nav {
+        gap: 0.45rem;
+      }
+
+      .nav a {
+        padding-inline: 0.85rem;
+        font-size: 0.91rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stat + .stat {
+        border-top: 0;
+        border-left: 1px solid var(--border);
+      }
+
+      .features,
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .example {
+        min-height: 155px;
+      }
+
+      .cta-box {
+        padding: 3.5rem 2rem;
+      }
+    }
+
+    @media (min-width: 820px) {
+      .hero {
+        padding: 6.3rem 0 5rem;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 3.2rem;
+      }
+
+      .hero-copy > p {
+        max-width: 580px;
+      }
+
+      .features {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .steps {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .step:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        width: 1.25rem;
+        height: 1px;
+        top: 2.6rem;
+        right: -1.27rem;
+        background: var(--border);
+      }
+
+      .example-strip {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .brand span:last-child {
+        font-size: 1.05rem;
+      }
+
+      .brand-mark {
+        width: 32px;
+        height: 32px;
+      }
+
+      .nav a {
+        padding-inline: 0.45rem;
+        font-size: 0.77rem;
+      }
+
+      .actions .button {
+        width: 100%;
+      }
+
+      .builder {
+        margin-inline: -0.3rem;
+      }
+
+      .builder-body {
+        grid-template-columns: 48px 1fr;
+      }
+
+      .tool-column {
+        padding-inline: 0.35rem;
+      }
+
+      .preview-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-art {
+        min-height: 90px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .button,
+      .nav a {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Criaí, página inicial">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8l1.6 5.1a3.5 3.5 0 0 0 2.3 2.3l5.1 1.6-5.1 1.6a3.5 3.5 0 0 0-2.3 2.3L12 20.8l-1.6-5.1a3.5 3.5 0 0 0-2.3-2.3L3 11.8l5.1-1.6a3.5 3.5 0 0 0 2.3-2.3L12 2.8Z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span>Criaí</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="recursos.html">Recursos</a>
+        <a href="criar-site.html">Criar Site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            IA gratuita, sem limites
+          </div>
+          <h1>Seu site pronto. <span class="gradient-text">Sua ideia no ar.</span></h1>
+          <p>Descreva o que você imagina e nossa inteligência artificial cria um site completo, responsivo e pronto para publicar — sem marca d’água e com o domínio que você escolher.</p>
+
+          <div class="actions">
+            <a class="button button-primary" href="criar-site.html">
+              Criar meu site grátis
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a class="button button-secondary" href="recursos.html">
+              Explorar recursos
+            </a>
+          </div>
+
+          <div class="trust-row" aria-label="Benefícios principais">
+            <span class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Gratuito de verdade
+            </span>
+            <span class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Sem marca d’água
+            </span>
+            <span class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Sem cartão
+            </span>
+          </div>
+        </div>
+
+        <div class="builder" aria-label="Prévia do criador de sites com inteligência artificial">
+          <div class="builder-window">
+            <div class="window-bar">
+              <span class="window-dot"></span>
+              <span class="window-dot"></span>
+              <span class="window-dot"></span>
+              <span class="window-url">meunegocio.com.br</span>
+            </div>
+            <div class="builder-body">
+              <div class="tool-column" aria-hidden="true">
+                <span class="tool active">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                </span>
+                <span class="tool">
+                  <svg viewBox="0 0 24 24"><path d="M5 19 19 5M7 5h12v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="tool">
+                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="tool">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM7 4h10v3M8 12h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+              <div class="canvas">
+                <div class="site-preview">
+                  <div class="preview-nav">
+                    <span class="preview-logo"><i></i> Aurora Studio</span>
+                    <span class="preview-links"><span>Projetos</span><span>Sobre</span><span>Contato</span></span>
+                  </div>
+                  <div class="preview-hero">
+                    <div>
+                      <div class="preview-kicker">Design que transforma</div>
+                      <div class="preview-title">Ideias incríveis merecem ganhar vida.</div>
+                      <div class="preview-text">Criamos experiências digitais marcantes para negócios que querem ir além.</div>
+                      <span class="preview-button">Conheça o estúdio</span>
+                    </div>
+                    <div class="preview-art"></div>
+                  </div>
+                  <div class="preview-cards">
+                    <div class="preview-card"><i></i><span></span><span></span></div>
+                    <div class="preview-card"><i></i><span></span><span></span></div>
+                    <div class="preview-card"><i></i><span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="ai-bubble">
+                  <div class="ai-label">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.3 4.1a3 3 0 0 0 2 2L19.5 10l-4.2 1.3a3 3 0 0 0-2 2L12 17.5l-1.3-4.2a3 3 0 0 0-2-2L4.5 10l4.2-1.3a3 3 0 0 0 2-2L12 3Z" fill="currentColor"/></svg>
+                    Criaí
+                  </div>
+                  “Crie um site moderno para meu estúdio criativo, com visual elegante e formulário de contato.”
+                  <div class="status-line"><i></i> Site criado com sucesso</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Destaques da plataforma">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat">
+            <strong>R$ 0</strong>
+            <span>para começar e continuar</span>
+          </div>
+          <div class="stat">
+            <strong>0 marcas</strong>
+            <span>no seu site publicado</span>
+          </div>
+          <div class="stat">
+            <strong>1 ideia</strong>
+            <span>é tudo que você precisa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="recursos">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-label">Crie sem barreiras</span>
+          <h2>Tudo para transformar uma ideia em um site real</h2>
+          <p>A IA cuida da estrutura, dos textos e do visual. Você mantém o controle sobre cada detalhe.</p>
+        </div>
+
+        <div class="features">
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Criação instantânea</h3>
+            <p>Conte sua ideia em poucas palavras e receba páginas completas em instantes, já adaptadas ao seu objetivo.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.9"/>
+                <path d="M3 12h18M12 3c2.2 2.5 3.3 5.5 3.3 9S14.2 18.5 12 21c-2.2-2.5-3.3-5.5-3.3-9S9.8 5.5 12 3Z" fill="none" stroke="currentColor" stroke-width="1.9"/>
+              </svg>
+            </div>
+            <h3>Seu próprio domínio</h3>
+            <p>Escolha um endereço personalizado para fortalecer sua marca e facilitar que as pessoas encontrem você.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 4h14v16H5zM8 8h8M8 12h5M8 16h8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m17 14 4 4M21 14l-4 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Sem marca d’água</h3>
+            <p>O site é seu. Publique uma experiência limpa e profissional, sem logotipos indesejados da plataforma.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/>
+                <path d="M8 20h8M12 16v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Visual responsivo</h3>
+            <p>Seu conteúdo se ajusta automaticamente a celulares, tablets e computadores com ótima legibilidade.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/>
+              </svg>
+            </div>
+            <h3>Qualquer estilo</h3>
+            <p>Crie portfólios, lojas, blogs, páginas de eventos, sites institucionais e muito mais com identidade própria.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20h16M6 16l3-3 3 2 6-7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 8h4v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Pronto para crescer</h3>
+            <p>Tenha uma base organizada, rápida e otimizada para apresentar seu projeto com mais credibilidade.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-label">Simples por natureza</span>
+          <h2>Da descrição à publicação em três passos</h2>
+          <p>Você não precisa entender de código, design ou hospedagem para colocar sua presença digital no ar.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step-number">1</span>
+            <h3>Descreva sua ideia</h3>
+            <p>Explique o tipo de site, o estilo visual, as páginas e as funções que deseja incluir.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">2</span>
+            <h3>Deixe a IA criar</h3>
+            <p>A plataforma organiza o conteúdo e gera uma experiência completa alinhada à sua proposta.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">3</span>
+            <h3>Personalize e publique</h3>
+            <p>Ajuste os detalhes, escolha seu domínio e compartilhe seu novo site com o mundo.</p>
+          </article>
+        </div>
+
+        <div class="example-strip" aria-label="Exemplos de sites que podem ser criados">
+          <div class="example"><span>Loja virtual</span></div>
+          <div class="example"><span>Portfólio criativo</span></div>
+          <div class="example"><span>Restaurante</span></div>
+          <div class="example"><span>Página de lançamento</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box">
+          <span class="section-label">Comece agora</span>
+          <h2>Sua próxima grande ideia merece um site incrível</h2>
+          <p>Crie quantas páginas precisar, experimente estilos e publique sem marca d’água. Tudo de forma gratuita.</p>
+          <a class="button button-primary" href="criar-site.html">
+            Criar site com IA
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="index.html" aria-label="Criaí, página inicial">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8l1.6 5.1a3.5 3.5 0 0 0 2.3 2.3l5.1 1.6-5.1 1.6a3.5 3.5 0 0 0-2.3 2.3L12 20.8l-1.6-5.1a3.5 3.5 0 0 0-2.3-2.3L3 11.8l5.1-1.6a3.5 3.5 0 0 0 2.3-2.3L12 2.8Z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span>Criaí</span>
+      </a>
+
+      <nav class="footer-nav" aria-label="Navegação do rodapé">
+        <a href="index.html">Home</a>
+        <a href="recursos.html">Recursos</a>
+        <a href="criar-site.html">Criar Site</a>
+      </nav>
+
+      <span class="copyright">© 2025 Criaí. Ideias sem limites.</span>
+    </div>
+  </footer>
+</body>
+</html>
